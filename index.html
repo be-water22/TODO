@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App [ my first application ]</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <h1>My Todo APP</h1>
+
+    <input id="taskInput" placeholder="enter a task" />
+    <button onclick="addTask()">Add</button>
+
+    <ul id="taskList"></ul>
+    <!-- what is the significance of the just above line -->
+    <!--
+        <ul> 
+            // a way to store data statically 
+            <li> Task 1 </li> 
+            <li> Task 2 </li> 
+        </ul>
+
+        here id=taskList is a unique name , it lets JS find this element. JS uses getElementById method to get this <ul> element 
+         -> it acts as container that stores all tasks dynamically 
+
+        -> when you add a task : 
+            let li = document.createElement("li"); 
+            li.innerText = task.text
+            list.appendChild(li); 
+        -> this is called DOM (document object model)
+        -> js finds elements using id 
+
+    -->
+    <script src="script.js"></script>
+</body>
+</html>

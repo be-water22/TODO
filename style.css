@@ -6,7 +6,9 @@ body {
 
 input {
     /*
-    what is padding ?
+    what is padding ? 
+    padding is the space between an element's content and its border
+     -> padding-left , padding-right , padding-top , padding-bottom 
     */
     padding: 10px;
     width: 200px;

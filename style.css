@@ -1,7 +1,9 @@
+/* each of these starting with . is a CSS class which has been defined either in .html or .js*/
 body {
     font-family:Arial; 
     text-align: center; 
     margin-top: 50px;
+    background-color: rgb(146, 130, 130);
 }
 
 input {
@@ -14,10 +16,38 @@ input {
     width: 200px;
 }
 
-button {
+.delete-btn {
+    padding : 1px; 
+    float : right;
+    background-color: red;
+}
+.edit-btn {
+    padding : 1px; 
+    float : right;
+    background-color: blue;
+}
+.menu-btn {
+    padding : 1px;
+    float : right;
+}
+ul {
+    list-style : none; 
+    padding : 0;
+}
+li {
+    /* how does it know which list-item we are talking about incase there are many of them? => prolly uses classNames similar to the case of buttons*/
+    
+    border : 2px solid black;
+    margin: 10px auto; 
     padding : 10px; 
+    width : 300px;
+    border-radius : 8px;
+    background-color: #f9f9f9;
 }
 
-li {
-    margin: 10px; 
+.pending {
+    background-color: lightyellow;
+}
+.done {
+    background-color: lightgreen;
 }

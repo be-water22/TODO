@@ -1,3 +1,4 @@
+let currentFilter = "all"; 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 /*
 localStorage = browser storage (small database) 
@@ -33,6 +34,9 @@ function renderTasks() {
     loop over each task , task = current task object 
     index = position (0, 1, 2, ...)
     */
+        if((task.done && currentFilter=="pending") || (!task.done && currentFilter=="done")) {
+            return;  
+        }
         let li = document.createElement("li"); 
         /* creates <li> element */
         li.innerText = task.text; /* sets text inside <li> */
@@ -61,16 +65,35 @@ function renderTasks() {
         /* add <li> to <ul> */
     });
 }
+function filter() {
+    let filtered = document.getElementById("filterTasks").value; /* why .value is used */
+    currentFilter = filtered || "all";
+    renderTasks(); 
+}
 
 function addTask() {
-    let input = document.getElementById("taskInput"); 
+    let input = document.getElementById("taskInput");
 
+    if(input.value.trim()==="") {
+        alert("Tasks is invalid");
+        renderTasks();  
+        return; 
+    }
     tasks.push({
+        /* defining that task has two properties : text and done */
         text: input.value, 
-        done:false
+        done: false
     });
 
     saveTasks(); 
+    currentFilter = "all";
     renderTasks(); 
-    input.value = "";
+    input.value = ""; /* why this is made empty --> this clears the input box after clicking the button */
 }
+
+/* 
+    add edit task
+    add filters -> done 
+    add deadline 
+    add dark Mode 
+*/

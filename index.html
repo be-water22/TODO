@@ -6,8 +6,14 @@
 </head>
 <body>
 
-    <h1>My Todo APP</h1>
-
+    <h1>My Todo APP</h1> 
+    <!-- <input id="filterTasks" placeholder="what to choose" /> -->
+    <select id="filterTasks">
+        <option value="all">ALL</option>
+        <option value="done">completed</option>
+        <option value="pending">pending</option>
+    </select>
+    <button onclick="filter()">Filter</button>
     <input id="taskInput" placeholder="enter a task" />
     <button onclick="addTask()">Add</button>
 

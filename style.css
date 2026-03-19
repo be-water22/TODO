@@ -44,6 +44,9 @@ li {
     border-radius : 8px;
     background-color: #f9f9f9;
 }
+li:hover {
+    transform : scale(1.02);
+}
 
 .pending {
     background-color: lightyellow;
@@ -57,4 +60,7 @@ li {
     background:white;
     border: 1px solid black;
     padding: 5px;
+}
+.imp-btn {
+    float : right;
 }

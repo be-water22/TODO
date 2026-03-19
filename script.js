@@ -12,7 +12,9 @@ let contextMenu = document.createElement("div");
 contextMenu.className = "context-menu"; 
 document.body.appendChild(contextMenu); // why this is needed anyway ?? 
     // you created this element in memory but it won't show on screen unless you add it to DOM
-let currentFilter = "all"; 
+let currentFilter = "myDay"; 
+// let today = new Date();
+// today.setHours(0, 0, 0, 0);
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 /*
 localStorage = browser storage (small database) 
@@ -49,6 +51,16 @@ function saveTasks() {
 }
 
 function renderTasks() {
+    // sorting logic : compare (date, done/pending, important)
+    tasks.sort((a, b) => {
+        const dateDiff = new Date(b.date) - new Date(a.date); // newer to older
+        if(dateDiff) return dateDiff;
+        const pend = a.done - b.done; 
+        if(pend) return pend; 
+        const impp = b.imp - a.imp; 
+        if(impp) return impp;
+        return 0; 
+    });
     /*
     clears UI , rebuilds it from scratch 
     */
@@ -64,17 +76,26 @@ function renderTasks() {
     loop over each task , task = current task object 
     index = position (0, 1, 2, ...)
     */
-        if((task.done && currentFilter=="pending") || (!task.done && currentFilter=="done")) {
-            return;  
+        if(currentFilter == "myDay") {
+            if(task.date !== new Date().toDateString()) {
+                // console.log(task.date , today.getTime());
+                return;
+            } 
         }
+        if(currentFilter == "Imp") {
+            if(!task.imp) return; 
+        }
+
         let li = document.createElement("li"); 
 
         // It adds a CSS class (either done or pending) to each <li> based on its state
-        if(task.done) {
-            li.classList.add("done"); 
-        } else {
-            li.classList.add("pending");
-        }
+        
+        // if(task.done) {
+        //     li.classList.add("done"); 
+        // } else {
+        //     li.classList.add("pending");
+        // }
+
         /* creates <li> element */
         li.innerText = task.text; /* sets text inside <li> */
         if(task.done) {
@@ -86,18 +107,30 @@ function renderTasks() {
             renderTasks(); 
         }; 
 
+        let impBtn = document.createElement("button"); 
+        impBtn.innerText = task.imp ? "★" : "☆";        
+        impBtn.className = "imp-btn";
+
+        impBtn.onclick = function(e) {
+            e.stopPropagation();
+            task.imp = !task.imp;
+            saveTasks(); 
+            renderTasks(); 
+        }
+
         li.oncontextmenu = function(e) { // function called on the right click
             e.preventDefault(); // stops the browswer's default menu
             showMenu(e, index); 
         }
-        
+        li.appendChild(impBtn);
+        // tmpList.appendChild(li);
         list.appendChild(li); 
         /* add <li> to <ul> */
     });
 }
 function filter() {
     let filtered = document.getElementById("filterTasks").value; /* why .value is used */
-    currentFilter = filtered || "all";
+    currentFilter = filtered || "myDay";
     renderTasks(); 
 }
 
@@ -148,26 +181,30 @@ function showMenu(e, index) {
 function addTask() {
     let input = document.getElementById("taskInput");
 
-    /*
-    document.getElementById("taskInput").addEventListener("keypress", function(e) {
-        if (e.key === "Enter") {
-            addTask();
-        }
-    });
-    */
     if(input.value.trim()==="") {
         alert("Tasks is invalid");
         renderTasks();  
         return; 
     }
+
+    let today = new Date(); 
+    today.setHours(0, 0, 0, 0);
+    /*
+    - what we have used is removing time from the timestamp by making it all zero
+    - new Date() returns date + time 
+    let today = new Date();
+    today.getMonth() -> 1-12, .getFullYear() -> 2026 , .getDate() -> 1-31
+     */
     tasks.push({
         /* defining that task has two properties : text and done */
         text: input.value, 
-        done: false
+        done: false,
+        imp : false,
+        date : new Date().toDateString()
     });
 
     saveTasks(); 
-    currentFilter = "all";
+    currentFilter = "myDay";
     renderTasks(); 
     input.value = ""; /* why this is made empty --> this clears the input box after clicking the button */
 }
